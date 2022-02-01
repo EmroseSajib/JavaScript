@@ -153,14 +153,141 @@
 // const message = "Today is friday ";
 // console.log(message.includes('is')); // case sensitive
 
-///=======javascript Class===========
+////=======javascript Class===========
 
 // class student {
-//     constructor(id, name) {
+
+//     constructor(id, name, blood, address) {
 //         this.id = id;
 //         this.name = name;
+//         this.blood = blood;
+//         this.address = address;
+//     }
+// }
+// let s1 = new student(12, "sajib", "AB+", "gazipur");
+// let s2 = new student(12, "emrose", "A+", "gazipur");
+// let s3 = new student(12, "sajib", "B+", "Dhaka");
+// // console.log(s1, s2, s3);
+// console.log(`${s1.name} his blood group is ${s1.blood} and his address is ${s1.address}`)
+
+
+
+////=========ES6 Modules=============
+
+// export // for excess different js file
+// import {variable name} from 'js file link'
+
+
+////=========JAVASCRIPT API===================/////////////
+
+// JSON.stringify ///use for make json format 
+// JSON.parse ///use for make normal format
+//GET // data call from server
+// POST // post data into server
+// PATCH // update a single data
+//DELETE // delete data from server
+
+
+////==========Get Data from server ==========
+
+
+// function display() {
+
+//     fetch('https://jsonplaceholder.typicode.com/posts')
+//         .then((response) => response.json())
+//         .then((data) => displayUser(data));
+
+
+// }
+
+
+
+// function displayUser(data) {
+
+//     const ul = document.getElementById("titleAll");
+
+//     for (const user of data) {
+//         console.log(user.title);
+//         const li = document.createElement("li");
+//         li.classList.add('post');
+//         li.innerText = `${user.id} : ${user.title}`;
+//         ul.appendChild(li);
 //     }
 // }
 
-// let s1 = new student(101, "Anisur");
-// console.log(s1.name);
+
+///============POST data form server==================
+
+
+// fetch('https://jsonplaceholder.typicode.com/posts/1', {
+//         method: 'PATCH',
+//         body: JSON.stringify({
+//             id: 20,
+//             title: 'sajib',
+//         }),
+//         headers: {
+//             'Content-type': 'application/json; charset=UTF-8',
+//         },
+//     })
+//     .then((response) => response.json())
+//     .then((json) => console.log(json));
+
+
+
+fetch('https://restcountries.com/v2/all')
+    .then(res => res.json())
+    .then(data => displayUser(data))
+    .catch(error => console.log(error))
+
+
+function displayUser(users) {
+    const clothsDiv = document.getElementById("cloths-name");
+    clothsDiv.innerHTML = "";
+
+
+    users.map((user) => {
+        const clothDiv = document.createElement("div");
+        clothDiv.className = "cloth col-md-3 ";
+        const clothInfo = `
+            <div class="card";">
+          <img src=${user.flags.png} class="card-img-top image-fluid" alt="...">
+      <div class="card-body p-3">
+    <h4 class="card-title">Country Name:${user.name}</h4>
+    <h6 class="card-text">Area:${user.area}</h6>
+    <p>Region:${user.region}</p>
+    <button onclick="srcBtn('${user.name}')">Details</button>
+  </div>
+</div>
+`
+        clothDiv.innerHTML = clothInfo;
+        clothsDiv.appendChild(clothDiv);
+
+    })
+}
+
+function srcBtn(name) {
+
+    const url = `https://restcountries.com/v2/name/${name}`
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => dispaly2(data[0]));
+
+}
+
+
+function dispaly2(values) {
+    const class_name = document.getElementById("class_name");
+
+    class_name.innerHTML = `
+
+    
+    <img src="${values.flags.png}"></img>
+    <p>Country Name: ${values.name}</p>
+    <p>Capital Name: ${values.capital}</p>
+    <p>Total Area: ${values.area}</p>
+    
+
+    `
+
+}
